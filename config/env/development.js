@@ -18,7 +18,7 @@ module.exports = {
    ***************************************************************************/
 
    models: {
-    connection: 'dockerMongo'
+    connection: 'localDiskDb'
    }
 
 };
