@@ -56,6 +56,12 @@ module.exports.connections = {
   * Run: npm install sails-mongo                                             *
   *                                                                          *
   ***************************************************************************/
+  dockerMongo: {
+    adapter: 'sails-mongo',
+    host: 'mongo',
+    port: 27017,  
+  },
+
   someMongodbServer: {
     adapter: 'sails-mongo',
     host: 'localhost',
@@ -65,11 +71,7 @@ module.exports.connections = {
     // database: 'your_mongo_db_name_here'
   },
 
-  dockerMongo: {
-    adapter: 'sails-mongo',
-    host: 'mongo',
-    port: 27017,	
-  },
+  
 
   /***************************************************************************
   *                                                                          *
