@@ -1,11 +1,11 @@
 web:
   build: .
-  ports: 
-  	- "80:1337"
-  links:
-  	- "redis"
-  	- "postgres:db"
+  ports:
+   - "80:1337"
+   links:
+    - "redis"
+    - "postgres:db"
 redis:
-	image: redis
+    image: redis
 postgres:
-	image: postgres
+    image: postgres
