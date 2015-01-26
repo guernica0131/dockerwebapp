@@ -1,3 +1,3 @@
-# withdocker
+# Modit Docker/Fig example
 
-a [Sails](http://sailsjs.org) application
+This application is based on sails.js. It usees 
