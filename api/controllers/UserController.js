@@ -61,6 +61,9 @@ module.exports = {
             if (err)
                 res.severError(err);
 
+            if (!user)
+                return res.send({warning: 'No user found with this id'});
+
             if (user[0].id === sessionID)
 	            req.session.user = null;
             // now we shoot our new users out to the sockets
