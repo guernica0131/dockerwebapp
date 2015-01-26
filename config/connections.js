@@ -87,7 +87,7 @@ module.exports.connections = {
     host: 'db',
     user: 'postgres',
     password: process.env.DB_ENV_POSTGRES_PASSWORD,
-    database:'sails' // should recreate
+   // database:'sails' // should recreate
   },
 
 
