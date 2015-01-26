@@ -1,6 +1,6 @@
 FROM node:0.10-onbuild
 
-RUN npm install
+ONBUILD RUN npm install
 EXPOSE 1337
 
 # Pull base image.
