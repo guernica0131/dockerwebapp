@@ -21,8 +21,6 @@
             $scope.ready = false;
             // wrap in a closure
             (function() {
-
-                console.log("Sails connected", $sails.socket.connected);
                 // once the socket connects we'll set our ready 
                 // parameter to true
                 if ($sails.socket.connected)
@@ -239,9 +237,6 @@
              * Pulls all existing users and online users
              */
             User.prototype.pull = function() {
-
-                console.log("PULLING USERS");
-
                 var deferred = $q.defer();
                 $sails.get(this.url, {
                     online: true
@@ -378,9 +373,6 @@
              * Pulls all existing users and online users
              */
             Chat.prototype.pull = function() {
-
-                console.log("PULLING Chats");
-
                 var deferred = $q.defer();
                 $sails.get(this.url).success(function(users) {
                     deferred.resolve(users);
