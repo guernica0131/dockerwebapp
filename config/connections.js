@@ -82,6 +82,14 @@ module.exports.connections = {
   *                                                                          *
   *                                                                          *
   ***************************************************************************/
+  dockerPostgress: {
+    adapter: 'sails-postgresql',
+    host: 'db',
+    user: 'postgres',//process.env.DB_USER,
+    password: process.env.DB_ENV_POSTGRES_PASSWORD
+  },
+
+
   somePostgresqlServer: {
     adapter: 'sails-postgresql',
     host: 'YOUR_POSTGRES_SERVER_HOSTNAME_OR_IP_ADDRESS',
