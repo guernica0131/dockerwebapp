@@ -60,8 +60,8 @@ module.exports = {
         }, {online:false}).exec(function(err, user) {
             if (err)
                 res.severError(err);
-            console.log(user);
-            if (!user)
+            
+            if (!_.isEmpty(user))
                 return res.send({warning: 'No user found with this id'});
 
             if (user[0].id === sessionID)
