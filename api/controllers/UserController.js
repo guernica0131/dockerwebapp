@@ -61,8 +61,11 @@ module.exports = {
             if (err)
                 res.severError(err);
             
-            if (_.isEmpty(user))
+            if (_.isEmpty(user)) { // as a precation, we clear the user from session
+                req.session.user = null;
                 return res.send({warning: 'No user found with this id'});
+            }
+                
 
             if (user[0].id === sessionID)
 	            req.session.user = null;
