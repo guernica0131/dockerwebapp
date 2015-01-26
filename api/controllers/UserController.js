@@ -61,7 +61,7 @@ module.exports = {
             if (err)
                 res.severError(err);
             
-            if (!_.isEmpty(user))
+            if (_.isEmpty(user))
                 return res.send({warning: 'No user found with this id'});
 
             if (user[0].id === sessionID)
