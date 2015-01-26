@@ -4,23 +4,6 @@ module.exports = function(grunt) {
             dest: '.tmp/public',
             js_dest: '.tmp/public/js',
             css_dest: '.tmp/public/styles',
-            // install: {
-            // 	 "angular": "~1.3.0",
-            // },
-            options: {
-            	
-                // packageSpecific: {
-                //     'angular': {
-                //         keepExpandedHierarchy: true,
-                //         stripGlobBase: true,
-                //         files: [
-                //             'angular/angular.min.js',
-                            
-                //         ]
-                //     }
-                // }
-            }
-
         }
     });
 
