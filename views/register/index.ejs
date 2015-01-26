@@ -1,0 +1,20 @@
+
+<div class="container" ng-controller="RegController" ng-show="ready">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="jumbotron">
+				<div class="page-header">
+  					<h1>What's your name</h1>
+  					<div class="form-group" ng-class="{'has-error':empty}">
+    					<label for="name">Enter name</label>
+    					<input type="text" class="form-control input-lg" id="name" placeholder="Enter name" ng-model="name">
+    					<span class="help-block" ng-show="empty">I need a name, please!</span>
+  					</div>
+  					<div class="form-group">
+  						<input type="submit" class="btn btn-info btn-lg" value="Go!" ng-click="register()">
+  					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,7 +1,7 @@
 /**
- * SpeakController
+ * ChatController
  *
- * @description :: Server-side logic for managing speaks
+ * @description :: Server-side logic for managing Chats
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
