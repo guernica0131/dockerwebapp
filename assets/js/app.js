@@ -56,12 +56,12 @@
                             case 'updated':
                                 // if we have a case where the booted user is YOU,
                                 // we kick you out      
-                                if (message.id == $rootScope.user.id) {
-                                    $rootScope.user = null;
+                                if (message.id == $rootScope.user.id) 
                                     return user.killSession().then(function(res) {
+                                        $rootScope.user = null;
                                         $window.location.href = '/';
                                     });
-                                }
+                                
                                 // and splice
                                 if (index > -1) // we found our user
                                     $rootScope.users.splice(index, 1);
