@@ -281,7 +281,7 @@
             };
 
             /*
-             * Socket actiosn methods for the model
+             * Default socket actions for the models
              *
              * @param {Object} scope - the angular scope object
              * @param {Object} message - the socket message
@@ -412,7 +412,7 @@
             };
 
             /*
-             * Socket actiosn methods for the model
+             * Socket action for user
              *
              * @param {Object} scope - the angular scope object
              * @param {Object} message - the socket message
@@ -507,7 +507,7 @@
 
             };
             /*
-             * Socket actiosn methods for the model
+             * Socket actions chat
              *
              * @param {Object} scope - the angular scope object
              * @param {Object} message - the socket message
