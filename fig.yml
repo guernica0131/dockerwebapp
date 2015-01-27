@@ -1,7 +1,7 @@
 web:
   build: .
-  #ports:
-  # - "80:1337"
+  ports:
+   - "80:1337"
   expose:
     - "80"
   links:
