@@ -14,8 +14,8 @@
         }
     ])
     // init factory.
-    .factory('app', ['$rootScope', '$sails', '$window', 'Chat', 'lodash',
-        function($rootScope, $sails, $window, Chat, _) {
+    .factory('app', ['$rootScope', '$window', 'Chat', 'lodash',
+        function($rootScope, $window, Chat, _) {
             // function is used to bootrap the application once the web sockets connect
             var bootstrap = (function(user) {
                 //  we find it our user already has a active session
