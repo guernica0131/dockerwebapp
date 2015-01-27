@@ -111,6 +111,10 @@
     ])
 
 
+    //////////////////////////////
+    //// Controllers
+    //////////////////////////////
+    
     // our application cotroller will manage the connection to sails sockets
     .controller('AppController', ['$scope', '$sails', '$window', 'app', 'User',
         function($scope, $sails, $window, app, User) {
@@ -204,6 +208,66 @@
 
         }
     ])
+
+       /*
+     * Controller formanaging active and online user
+     */
+    .controller('ChatsController', ['$scope', 'Chat', 'lodash',
+        function($scope, Chat, _) {
+
+            var chat = new Chat();
+            $scope.remove = function(c) {
+                chat.destroy(c);
+            };
+            // sets the color for the chats
+            $scope.setColor = function(u) {
+
+                var color;
+                if (u.color) // if the object has the color
+                    color = u.color;
+                else { // new objects will only contain the user id, so we search
+                    var color = $scope.users[_.indexOf(_.pluck($scope.users, 'id'), u)].color;
+                }
+                // return the color
+                return 'alert-' + color;
+            };
+
+        }
+    ])  
+
+    /*
+     * Controller for managing active and online user
+     */
+    .controller('ChatController', ['$scope', 'Chat',
+        function($scope, Chat) {
+            // create the chat object
+            var chat = new Chat();
+            $scope.createChat = function(e, element) {
+                // if we are typing and our event is not an Enter Event, return
+                if (element === 'key' && e.keyCode !== 13) return;
+                // if we have no chat or user, return
+                if (!$scope.chat || !$scope.user || !$scope.user.id)
+                    return;
+                // we want to clear the chat model
+                var chatText = $scope.chat;
+                $scope.chat = '';
+                // now we create the chat area
+                chat.create(chatText, $scope.user.id).then(function(chat) {
+
+                }, function(why) { // there was an error
+                    alert("I had a problem creating your chat");
+                });
+
+
+
+            };
+        }
+    ])
+
+
+    //////////////////////////////
+    //// Models
+    //////////////////////////////
 
     /*
     * Used as a base model whereby the others models can inherit actions
@@ -434,61 +498,6 @@
         }
     ])
 
-    /*
-     * Controller formanaging active and online user
-     */
-    .controller('ChatsController', ['$scope', 'Chat', 'lodash',
-        function($scope, Chat, _) {
-
-            var chat = new Chat();
-            $scope.remove = function(c) {
-                chat.destroy(c);
-            };
-            // sets the color for the chats
-            $scope.setColor = function(u) {
-
-                var color;
-                if (u.color) // if the object has the color
-                    color = u.color;
-                else { // new objects will only contain the user id, so we search
-                    var color = $scope.users[_.indexOf(_.pluck($scope.users, 'id'), u)].color;
-                }
-                // return the color
-                return 'alert-' + color;
-            };
-
-        }
-    ])
-
-
-
-    /*
-     * Controller for managing active and online user
-     */
-    .controller('ChatController', ['$scope', 'Chat',
-        function($scope, Chat) {
-            // create the chat object
-            var chat = new Chat();
-            $scope.createChat = function(e, element) {
-                // if we are typing and our event is not an Enter Event, return
-                if (element === 'key' && e.keyCode !== 13) return;
-                // if we have no chat or user, return
-                if (!$scope.chat || !$scope.user || !$scope.user.id)
-                    return;
-                // we want to clear the chat model
-                var chatText = $scope.chat;
-                $scope.chat = '';
-                // now we create the chat area
-                chat.create(chatText, $scope.user.id).then(function(chat) {
-
-                }, function(why) { // there was an error
-                    alert("I had a problem creating your chat");
-                });
-
-
-
-            };
-        }
-    ])
+ 
 
 }());
