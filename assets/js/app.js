@@ -114,7 +114,7 @@
     //////////////////////////////
     //// Controllers
     //////////////////////////////
-    
+
     // our application cotroller will manage the connection to sails sockets
     .controller('AppController', ['$scope', '$sails', '$window', 'app', 'User',
         function($scope, $sails, $window, app, User) {
@@ -209,7 +209,7 @@
         }
     ])
 
-       /*
+    /*
      * Controller formanaging active and online user
      */
     .controller('ChatsController', ['$scope', 'Chat', 'lodash',
@@ -233,7 +233,7 @@
             };
 
         }
-    ])  
+    ])
 
     /*
      * Controller for managing active and online user
@@ -270,8 +270,8 @@
     //////////////////////////////
 
     /*
-    * Used as a base model whereby the others models can inherit actions
-    */
+     * Used as a base model whereby the others models can inherit actions
+     */
     .service('Model', ['$rootScope', '$q', '$sails', 'lodash',
         function($rootScope, $q, $sails, _) {
 
@@ -498,6 +498,6 @@
         }
     ])
 
- 
+
 
 }());
