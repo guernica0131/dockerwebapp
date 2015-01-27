@@ -1,5 +1,5 @@
 web:
-  build: .
+  image: guernica0131/dockerwebapp
   ports:
    - "80:80"
   expose:
