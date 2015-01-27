@@ -10,4 +10,4 @@ web:
 redis:
   image: dockerfile/redis
 postgres:
-  image: dockerfile/postgres
+  image: postgres
