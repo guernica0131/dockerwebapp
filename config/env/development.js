@@ -18,7 +18,7 @@ module.exports = {
    ***************************************************************************/
 
    models: { 
-    connection: 'localDiskDb' //localDiskDb //dockerPostgress
+    connection: 'dockerPostgress' //localDiskDb //dockerPostgress
    }
 
 };
