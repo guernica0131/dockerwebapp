@@ -8,6 +8,6 @@ web:
     - "redis"
     - "postgres:db"
 redis:
-  image: redis
+  image: dockerfile/redis
 postgres:
-  image: postgres
+  image: dockerfile/postgres

@@ -106,7 +106,6 @@
                 bootstrap: bootstrap
             }
 
-
         }
     ])
 
@@ -195,14 +194,13 @@
         }
     ])
     /*
-     * Controller formanaging active and online user
+     * Controller for managing active and online user
      */
     .controller('UserController', ['$scope', 'User',
         function($scope, User) {
 
             var user = new User();
             $scope.bootUser = function(u) {
-                //console.log('Biit ', u);
                 user.terminate(u.id);
             };
 
@@ -210,7 +208,7 @@
     ])
 
     /*
-     * Controller formanaging active and online user
+     * Controller for managing active and online user
      */
     .controller('ChatsController', ['$scope', 'Chat', 'lodash',
         function($scope, Chat, _) {
@@ -424,7 +422,7 @@
     ])
 
     /*
-     * Service for managing chat models
+     * Chat model definitions
      */
     .service('Chat', ['$rootScope', '$q', 'lodash', 'Model',
         function($rootScope, $q, _, Model) {
@@ -497,7 +495,5 @@
 
         }
     ])
-
-
 
 }());
