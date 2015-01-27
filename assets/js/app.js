@@ -16,6 +16,7 @@
     // init factory.
     .factory('app', ['$rootScope', '$window', 'Chat', 'lodash',
         function($rootScope, $window, Chat, _) {
+
             // function is used to bootrap the application once the web sockets connect
             var bootstrap = (function(user) {
                 //  we find it our user already has a active session
@@ -45,58 +46,12 @@
 
                     // we listen to the web sockets
                     user.listen(function(message) {
-                        /*
-                         * @todo:: place in object and simplify
-                         */
-                        if (message.id) // find the index
-                            var index = _.indexOf(_.pluck($rootScope.users, 'id'), message.id);
-
-                        switch (message.verb) {
-
-                            case 'updated':
-                                // if we have a case where the booted user is YOU,
-                                // we kick you out      
-                                if (message.id == $rootScope.user.id) 
-                                    return user.killSession().then(function(res) {
-                                        $rootScope.user = null;
-                                        $window.location.href = '/';
-                                    });
-                                
-                                // and splice
-                                if (index > -1) // we found our user
-                                    $rootScope.users.splice(index, 1);
-
-                                break;
-                            case 'created':
-                                // we have a creation event
-                                if (index === -1) // if the index is not there
-                                    $rootScope.users.push(message.data); // push
-                                break;
-                        }
-
+                        user.actions($rootScope, message);
                     });
                     // we listen for chat changes
                     chat.listen(function(message) {
-
-                        if (message.id)
-                        // we find the index
-                            var index = _.indexOf(_.pluck($rootScope.chats, 'id'), message.id);
-
-                        switch (message.verb) {
-                            case 'created':
-                                // -1 meaning it is not in the chat array
-                                if (index === -1)
-                                    $rootScope.chats.push(message.data);
-                                break;
-                            case 'destroyed':
-                                // we find the index
-                                $rootScope.chats.splice(index, 1); // and splice
-                                break;
-                        }
-
+                        chat.actions($rootScope, message);
                     });
-
-
 
                 });
 
@@ -154,7 +109,8 @@
                 var id = $scope.user.id;
                 user.terminate(id).then(function() {
                     $window.location.href = '/'
-                }, function() {
+                }, function(why) {
+                    console.error(why);
                     alert("There was an error removing your user from session");
                 });
 
@@ -185,7 +141,8 @@
                 user.register($scope.name).then(function(user) {
                     $rootScope.user = user;
                     $window.location.href = '/'
-                }, function() {
+                }, function(why) {
+                    console.error(why);
                     alert("There was a problem registering you to the webserver")
                 });
 
@@ -215,19 +172,22 @@
 
             var chat = new Chat();
             $scope.remove = function(c) {
-                chat.destroy(c);
+                chat.destroy(c).then(function(dead) {
+                    // we find the undex in the model
+                    var index = _.indexOf(_.pluck($scope.chats, 'id'), dead.id);
+                    $scope.chats.splice(index, 1); // then splice
+                }, function(why) {
+                    console.error(why);
+                });
             };
             // sets the color for the chats
             $scope.setColor = function(u) {
-
-                var color;
-                if (u.color) // if the object has the color
-                    color = u.color;
-                else { // new objects will only contain the user id, so we search
-                    var color = $scope.users[_.indexOf(_.pluck($scope.users, 'id'), u)].color;
-                }
-                // return the color
-                return 'alert-' + color;
+                // our u param is either an object or id
+                var uId = _.isObject(u) ? u.id : u;
+                // now we find the user in the active users model
+                var user = $scope.users[_.indexOf(_.pluck($scope.users, 'id'), uId)];
+                // if there is no user send the offline class                
+                return 'alert-' + ((user && user.color) ? user.color : 'offline');
             };
 
         }
@@ -251,8 +211,9 @@
                 $scope.chat = '';
                 // now we create the chat area
                 chat.create(chatText, $scope.user.id).then(function(chat) {
-
+                    $scope.chats.push(chat);
                 }, function(why) { // there was an error
+                    console.error(why);
                     alert("I had a problem creating your chat");
                 });
 
@@ -270,8 +231,8 @@
     /*
      * Used as a base model whereby the others models can inherit actions
      */
-    .service('Model', ['$rootScope', '$q', '$sails', 'lodash',
-        function($rootScope, $q, $sails, _) {
+    .service('Model', ['$q', '$sails', 'lodash',
+        function($q, $sails, _) {
 
             var Model = function(url) {
                 this.url = url;
@@ -319,17 +280,50 @@
 
             };
 
+            /*
+             * Socket actiosn methods for the model
+             *
+             * @param {Object} scope - the angular scope object
+             * @param {Object} message - the socket message
+             */
+            Model.prototype.socketActions = function(scope, message) {
+
+                var models = this.url.replace('/', '') + 's', // we want the model name
+                    // we search to find its current location
+                    index = _.indexOf(_.pluck(scope[models], 'id'), message.id); 
+                // build the object
+                var defaultActions = {
+                    destroyed: function() {
+                        if (index > -1) // we found our user
+                            scope[models].splice(index, 1);
+                    },
+                    created: function() {
+                        if (index === -1)
+                            scope[models].push(message.data);
+                    }
+                    // @TODO: ADD CRUD
+
+                }
+
+                return {
+                    defaults: defaultActions
+                }
+            };
+
 
 
             return Model;
         }
     ])
 
+
+
+
     /*
      * A user model definition
      */
-    .service('User', ['$q', 'Model',
-        function($q, Model) {
+    .service('User', ['$q', '$window', 'Model',
+        function($q, $window, Model) {
             // we inherit the base Model for our user
             var User = function() {
                 Model.call(this, '/user');
@@ -363,6 +357,7 @@
             User.prototype.session = function() {
 
                 var deferred = $q.defer();
+
                 this.connect({
                     method: 'get',
                     url: '/session',
@@ -416,6 +411,35 @@
 
             };
 
+            /*
+             * Socket actiosn methods for the model
+             *
+             * @param {Object} scope - the angular scope object
+             * @param {Object} message - the socket message
+             */
+            User.prototype.actions = function(scope, message) {
+                // pull the defauts
+                var socketActions = this.socketActions(scope, message),
+                    self = this,
+                    actions = { // override for update
+                        updated: function() {
+                            if (message.id == scope.user.id)
+                                return self.killSession().then(function(res) {
+                                    scope.user = null;
+                                    $window.location.href = '/';
+                                });
+
+                            socketActions.defaults.destroyed();
+
+                        },
+                        created: socketActions.defaults.created
+                    }
+                    // if it exists, run it
+                if (_.isFunction(actions[message.verb]))
+                    actions[message.verb]();
+
+            };
+
             return User;
 
         }
@@ -453,10 +477,7 @@
                         text: chat,
                         user: user
                     },
-                    success: function(chat) {
-                        $rootScope.chats.push(chat);
-                        deferred.resolve(chat);
-                    },
+                    success: deferred.resolve,
                     error: deferred.reject
                 });
 
@@ -478,15 +499,25 @@
                     params: {
                         id: chat.id,
                     },
-                    success: function(dead) {
-                        var index = _.indexOf(_.pluck($rootScope.chats, 'id'), chat.id);
-                        $rootScope.chats.splice(index, 1);
-                        deferred.resolve(dead);
-                    },
+                    success: deferred.resolve,
                     error: deferred.reject
                 });
 
                 return deferred.promise;
+
+            };
+            /*
+             * Socket actiosn methods for the model
+             *
+             * @param {Object} scope - the angular scope object
+             * @param {Object} message - the socket message
+             */
+            Chat.prototype.actions = function(scope, message) {
+                // pull the defaults
+                var socketActions = this.socketActions(scope, message);
+                // if it exists, run it
+                if (_.isFunction(socketActions.defaults[message.verb]))
+                    socketActions.defaults[message.verb]();
 
             };
 
