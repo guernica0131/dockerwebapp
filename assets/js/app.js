@@ -123,7 +123,7 @@
     ])
 
     /*
-     * Controller for managine the registration page
+     * Controller for managing the registration page
      */
     .controller('RegController', ['$scope', '$rootScope', '$window', 'User',
         function($scope, $rootScope, $window, User) {
