@@ -234,7 +234,7 @@
     /*
      * Used as a base model whereby the others models can inherit actions
      */
-    .service('Model', ['$q', '$sails', 'lodash',
+    .factory('Model', ['$q', '$sails', 'lodash',
         function($q, $sails, _) {
 
             var Model = function(url) {
@@ -325,7 +325,7 @@
     /*
      * A user model definition
      */
-    .service('User', ['$q', '$window', 'Model',
+    .factory('User', ['$q', '$window', 'Model',
         function($q, $window, Model) {
             // we inherit the base Model for our user
             var User = function() {
@@ -451,7 +451,7 @@
     /*
      * Chat model definitions
      */
-    .service('Chat', ['$rootScope', '$q', 'lodash', 'Model',
+    .factory('Chat', ['$rootScope', '$q', 'lodash', 'Model',
         function($rootScope, $q, _, Model) {
             // constructor
             var Chat = function() {
