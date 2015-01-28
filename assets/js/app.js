@@ -152,6 +152,7 @@
     ])
     /*
      * Controller for managing active and online user
+     * @todo: place in directive
      */
     .controller('UserController', ['$scope', 'User',
         function($scope, User) {
@@ -165,7 +166,8 @@
     ])
 
     /*
-     * Controller for managing active and online user
+     * Controller for managing the chats 
+     * @todo: place in directive
      */
     .controller('ChatsController', ['$scope', 'Chat', 'lodash',
         function($scope, Chat, _) {
@@ -194,7 +196,8 @@
     ])
 
     /*
-     * Controller for managing active and online user
+     * Controller for managing the chat box
+     * @todo: place in directive
      */
     .controller('ChatController', ['$scope', 'Chat',
         function($scope, Chat) {
