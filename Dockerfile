@@ -1,14 +1,14 @@
 
 FROM dockerfile/nodejs-bower-grunt
 
-COPY package.json /data
+ADD package.json /data/package.json
 
 RUN npm install
 
-COPY bower.json /data
+ADD bower.json /data/bower.json
 
 RUN bower install --allow-root
 
-COPY . /data
+ADD . /data
 
 
