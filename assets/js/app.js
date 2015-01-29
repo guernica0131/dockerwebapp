@@ -1,5 +1,5 @@
 /*
- * Our app.js file will contains all custom client-side js
+ * Our app.js file will contains all custom client-side js. 
  */
 (function() {
     'use strict';
