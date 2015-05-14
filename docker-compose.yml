@@ -1,0 +1,18 @@
+web:
+  build: .
+  ports:
+    - 8080:80
+  links:
+    - postgresql:db0
+    - mongodb:db1
+    - redis:db2
+    - postgresql:db3
+
+postgresql:
+  image: postgres:9.4
+
+mongo:
+  image: mongo:3
+
+redis:
+  image: redis:3
